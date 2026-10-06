@@ -1,5 +1,8 @@
 package vfs;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 /** Точка входа в приложение. */
 public class Main {
     /**
@@ -10,7 +13,10 @@ public class Main {
         Config config = CliParser.parse(args);
         printConfig(config);
 
-        Shell shell = new Shell("VFS28");
+        VirtualFileSystem vfs = tryLoadVfs(config);
+        String shellName = vfs != null ? vfs.getName() : "VFS28";
+        Shell shell = new Shell(shellName);
+        shell.setVfs(vfs);
 
         if (config.hasScriptPath()) {
             ScriptRunner runner = new ScriptRunner(shell);
@@ -19,6 +25,19 @@ public class Main {
 
         if (shell.isRunning()) {
             shell.run();
+        }
+    }
+
+    private static VirtualFileSystem tryLoadVfs(Config config) {
+        if (!config.hasVfsPath()) return null;
+
+        try {
+            VirtualFileSystem vfs = VfsLoader.load(Path.of(config.getVfsPath()));
+            System.out.println("VFS loaded: " + vfs.getName() + " (" + vfs.size() + " nodes)");
+            return vfs;
+        } catch (IOException e) {
+            System.out.println("Failed to load VFS: " + e.getMessage());
+            return null;
         }
     }
 

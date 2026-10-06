@@ -69,4 +69,53 @@
 
 - `ltest-1.sh` / `wtest-1.bat` — базовые сценарии (Linux / Windows).
 - `ltest-2.sh` / `wtest-2.bat` — особые случаи (Linux / Windows).
->>>>>>> e4ed50d (feat: implement stage 2 configuration and startup script)
+
+## Этап 3. VFS
+
+### Описание
+
+Добавлена загрузка виртуальной файловой системы из JSON-файла.
+Все данные размещаются в памяти; исходный файл только читается
+и не модифицируется. Двоичное содержимое файлов кодируется в base64.
+
+При запуске с параметром `--vfs <path>` эмулятор загружает VFS
+и выводит строку `VFS loaded: <имя> (<число узлов> nodes)`.
+При ошибке загрузки выводится сообщение `Failed to load VFS: ...`.
+
+### Формат JSON
+
+```json
+{
+  "name": "VFS28",
+  "root": {
+    "type": "dir",
+    "children": {
+      "readme.txt": { "type": "file", "content": "SGVsbG8=" },
+      "docs": {
+        "type": "dir",
+        "children": {
+          "guide.txt": { "type": "file", "content": "R3VpZGU=" }
+        }
+      }
+    }
+  }
+}
+```
+
+- `type` — `dir` или `file`.
+- `children` — объект, отображающий имена потомков на узлы.
+- `content` — содержимое файла в base64.
+
+### Образцы VFS
+
+- `vfs/min-vfs.json` — минимальная VFS (только корень).
+- `vfs/standart-vfs.json` — VFS с несколькими файлами и папкой.
+- `vfs/deep-vfs.json` — VFS с четырьмя уровнями вложенности.
+- `vfs/invalid-vfs.json` — неправильно оформленный JSON для тестирования ошибок.
+
+### Скрипты тестирования
+
+- `ltest-3.sh` / `wtest-3.bat` — загрузка трёх вариантов VFS (Linux / Windows).
+- `ltest-4.sh` / `wtest-4.bat` — ошибки и совместная работа с `--script` (Linux / Windows).
+
+

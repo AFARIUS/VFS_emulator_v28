@@ -1,0 +1,27 @@
+{
+  "name": "DeepVFS",
+  "root": {
+    "type": "dir",
+    "children": {
+      "a": {
+        "type": "dir",
+        "children": {
+          "b": {
+            "type": "dir",
+            "children": {
+              "c": {
+                "type": "dir",
+                "children": {
+                  "file.txt": {
+                    "type": "file",
+                    "content": "ZGVlcCBmaWxl"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

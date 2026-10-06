@@ -1,0 +1,25 @@
+{
+  "name": "StandartVFS",
+  "root": {
+    "type": "dir",
+    "children": {
+      "readme.txt": {
+        "type": "file",
+        "content": "SGVsbG8sIFZGUyE="
+      },
+      "data.bin": {
+        "type": "file",
+        "content": "AAECAwQF"
+      },
+      "docs": {
+        "type": "dir",
+        "children": {
+          "guide.txt": {
+            "type": "file",
+            "content": "R3VpZGU="
+          }
+        }
+      }
+    }
+  }
+}

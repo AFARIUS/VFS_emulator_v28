@@ -24,7 +24,6 @@ public class ScriptRunner {
     /**
      * Читает и выполняет скрипт по указанному пути.
      * Пустые строки игнорируются. Ошибочные строки помечаются и пропускаются.
-     *
      * @param scriptPath путь к файлу скрипта
      */
     public void run(String scriptPath) {

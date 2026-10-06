@@ -1,5 +1,6 @@
-ls -l /home
-cd documents
+ls
+cd /home
+ls -l /tmp
 unknown-command
-ls /tmp
+cd ...
 exit

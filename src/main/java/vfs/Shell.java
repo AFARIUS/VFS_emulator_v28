@@ -7,6 +7,7 @@ public class Shell {
     private final String vfsName;
     private final Scanner scanner;
     private boolean running;
+    private VirtualFileSystem vfs;
 
     /**
      * Создает оболочку с указанным именем VFS.
@@ -16,6 +17,19 @@ public class Shell {
         this.vfsName = vfsName;
         this.scanner = new Scanner(System.in);
         this.running = true;
+    }
+
+    /**
+     * Сохраняет ссылку на загруженную VFS.
+     * @param vfs виртуальная файловая система или null
+     */
+    public void setVfs(VirtualFileSystem vfs) {
+        this.vfs = vfs;
+    }
+
+    /** Возвращает загруженную VFS или null. */
+    public VirtualFileSystem getVfs() {
+        return vfs;
     }
 
     /** Возвращает строку приглашения. */
