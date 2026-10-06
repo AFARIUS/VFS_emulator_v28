@@ -29,8 +29,6 @@
 ```bash
 ./gradlew run
 ```
-<<<<<<< HEAD
-=======
 
 ## Этап 2. Configuration
 
