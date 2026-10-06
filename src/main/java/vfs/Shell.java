@@ -1,13 +1,16 @@
 package vfs;
 
+import vfs.commands.*;
+
 import java.util.Scanner;
 
 /** REPL-оболочка для эмулятора VFS. */
 public class Shell {
     private final String vfsName;
     private final Scanner scanner;
+    private final CommandContext context;
+    private final CommandRegistry registry;
     private boolean running;
-    private VirtualFileSystem vfs;
 
     /**
      * Создает оболочку с указанным именем VFS.
@@ -16,7 +19,19 @@ public class Shell {
     public Shell(String vfsName) {
         this.vfsName = vfsName;
         this.scanner = new Scanner(System.in);
+        this.context = new CommandContext();
+        this.registry = new CommandRegistry();
         this.running = true;
+        registerCommands();
+    }
+
+    private void registerCommands() {
+        registry.register("ls", new LsCommand());
+        registry.register("cd", new CdCommand());
+        registry.register("history", new HistoryCommand());
+        registry.register("uptime", new UptimeCommand());
+        registry.register("tail", new TailCommand());
+        registry.register("exit", new ExitCommand(this));
     }
 
     /**
@@ -24,12 +39,12 @@ public class Shell {
      * @param vfs виртуальная файловая система или null
      */
     public void setVfs(VirtualFileSystem vfs) {
-        this.vfs = vfs;
+        context.setVfs(vfs);
     }
 
     /** Возвращает загруженную VFS или null. */
     public VirtualFileSystem getVfs() {
-        return vfs;
+        return context.getVfs();
     }
 
     /** Возвращает строку приглашения. */
@@ -40,6 +55,11 @@ public class Shell {
     /** Возвращает true, если оболочка ещё не остановлена командой exit. */
     public boolean isRunning() {
         return running;
+    }
+
+    /** Останавливает оболочку (вызывается командой exit). */
+    public void stop() {
+        this.running = false;
     }
 
     /** Запускает цикл REPL. */
@@ -60,42 +80,19 @@ public class Shell {
      * @return true, если команда распознана и выполнена, иначе false
      */
     public boolean executeLine(String input) {
+        context.addHistory(input);
         String[] tokens = Parser.parse(input);
         if (tokens.length == 0) {
             return false;
         }
-        String command = tokens[0];
+        String commandName = tokens[0];
+        Command command = registry.get(commandName);
+        if (command == null) {
+            System.out.println("Undefined command: " + commandName);
+            return false;
+        }
         String[] args = new String[tokens.length - 1];
         System.arraycopy(tokens, 1, args, 0, args.length);
-        return execute(command, args);
-    }
-
-    private boolean execute(String command, String[] args) {
-        switch (command) {
-            case "exit":
-                running = false;
-                System.out.println("Exit command executed successfully.");
-                return true;
-            case "ls":
-                printStub("ls", args);
-                return true;
-            case "cd":
-                printStub("cd", args);
-                return true;
-            default:
-                System.out.println("Undefined command: " + command);
-                return false;
-        }
-    }
-
-    private void printStub(String commandName, String[] args) {
-        System.out.print(commandName + ": stub. Args: [");
-        for (int i = 0; i < args.length; i++) {
-            System.out.print(args[i]);
-            if (i < args.length - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println("]");
+        return command.execute(context, args);
     }
 }

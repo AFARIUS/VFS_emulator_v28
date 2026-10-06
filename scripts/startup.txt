@@ -1,6 +1,10 @@
 ls
-cd /home
-ls -l /tmp
+cd docs
+ls
+tail -n 2 readme.txt
+history
+uptime
+cd ..
+ls
 unknown-command
-cd ...
 exit
