@@ -24,3 +24,8 @@
 ### Сборка
 ```bash
 ./gradlew build
+```
+### Запуск
+```bash
+./gradlew run
+```
