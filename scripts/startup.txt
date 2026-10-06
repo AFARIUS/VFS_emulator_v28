@@ -1,10 +1,15 @@
+help
 ls
 cd docs
 ls
+cd ..
 tail -n 2 readme.txt
 history
 uptime
-cd ..
+rmdir empty
 ls
+rmdir docs
+rmdir nowhere
+rmdir docs/guide.txt
 unknown-command
 exit

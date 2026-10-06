@@ -29,6 +29,14 @@ public final class VfsDirectory implements VfsNode {
     }
 
     /**
+     * Удаляет потомка по имени.
+     * @param childName имя потомка
+     * @return true, если потомок был удалён
+     */
+    public boolean removeChild(String childName) {
+        return children.remove(childName) != null;
+    }
+    /**
      * Возвращает потомка по имени или null, если его нет.
      * @param childName имя потомка
      * @return узел-потомок или null

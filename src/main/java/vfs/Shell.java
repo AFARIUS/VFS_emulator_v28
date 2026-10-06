@@ -26,12 +26,14 @@ public class Shell {
     }
 
     private void registerCommands() {
-        registry.register("ls", new LsCommand());
-        registry.register("cd", new CdCommand());
-        registry.register("history", new HistoryCommand());
-        registry.register("uptime", new UptimeCommand());
-        registry.register("tail", new TailCommand());
-        registry.register("exit", new ExitCommand(this));
+        registry.register("ls", "list directory contents", new LsCommand());
+        registry.register("cd", "change current directory", new CdCommand());
+        registry.register("history", "print command history", new HistoryCommand());
+        registry.register("uptime", "print emulator uptime", new UptimeCommand());
+        registry.register("tail", "print last N lines of a file", new TailCommand());
+        registry.register("rmdir", "remove an empty directory", new RmdirCommand());
+        registry.register("help", "list available commands", new HelpCommand(registry));
+        registry.register("exit", "exit the emulator", new ExitCommand(this));
     }
 
     /**
