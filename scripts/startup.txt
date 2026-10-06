@@ -1,0 +1,5 @@
+ls -l /home
+cd documents
+unknown-command
+ls /tmp
+exit
